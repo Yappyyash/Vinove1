@@ -29,6 +29,7 @@ def upload_to_s3(file_name, bucket, object_name=None):
         os.remove(file_name)
         print(f"Deleted {file_name} from local storage")
         
+        
     except FileNotFoundError:
         print(f"The file {file_name} was not found")
     except NoCredentialsError:
