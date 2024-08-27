@@ -137,6 +137,6 @@ analysis_thread = threading.Thread(target=periodic_analysis, args=(120,), daemon
 analysis_thread.start()
 
 awsThread = threading.Thread(target=upload_images_in_directory, args=(LOCAL_DIRECTORY, S3_BUCKET_NAME,), daemon=True)
-awsThread.start()
+# awsThread.start()
 
 finaldata.pop(0)

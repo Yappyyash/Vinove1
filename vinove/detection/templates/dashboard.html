@@ -79,7 +79,6 @@ button:hover {
           <form method="POST" action="{% url 'save_name' %}">
             {% csrf_token %}
             <input type="text" id="name" name="name" placeholder="Username" required>
-            <input type="number" id="interval" name="interval" placeholder="Interval in minutes" required>
             <button type="submit">Start</button>
           </form>
         </div>

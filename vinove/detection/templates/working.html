@@ -66,23 +66,32 @@ button {
 button:hover {
   background-color: #e63900;
 }
-
+#blink {
+            font-size: 15px;
+            font-weight: bold;
+            font-family: sans-serif;
+}
+.centre{
+  text-align: center;
+}
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="card">
-    <h1 style="text-align: center;">
+    <div class="card">
+    <h1 class="centre">
         {{ user_name }}
-        <h1>Activity Monitor</h1>
-    <b>Status: {{ status }}</b>
-    <p>Active Time: of current session {{ active_time }} minutes</p>
+    </h1>
+    <marquee> Your Activity is been recorded by organizations</marquee>
+    <b id="blink" class="centre">Status: {{ status }}</b>
     <p> Mouse Count {{ mousecount }} </p>
     <p> Keys Clicked {{ keycount }}</p>
     <p> Total Session Timming <span id="total"> </span> Minutes</p>
+    <p>Active Time: of current session {{ active_time }} minutes</p>
 
     <button onclick="checkConnectivity()">AWS</button>
     </h1>
+    <p style="text-decoration: underline;">User's Sessions : </p>
     <ol id="list">
         {% for item in finaldata %}
             <li>{{ item }}</li>
@@ -113,6 +122,13 @@ button:hover {
                 alert("No network connection. Please check your internet connectivity.");
             }
         }
+        let blink =
+            document.getElementById('blink');
+
+        setInterval(function () {
+            blink.style.opacity =
+                (blink.style.opacity == 0 ? 1 : 0);
+        }, 800); 
     </script>
 </body>
 </html>

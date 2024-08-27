@@ -7,8 +7,6 @@ def save_name(request):
     if request.method == 'POST':
         name = request.POST.get('name')
         request.session['user_name'] = name
-        interval = int(request.POST.get('interval')) *60
-        request.session['interval'] = interval
         return redirect('activity_view')
 
     return HttpResponse("Invalid request method", status=405)
