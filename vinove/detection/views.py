@@ -26,7 +26,6 @@ def activity_view(request):
         'mousecount':activity_data.get('mousecount', 'nodata'),
         'keycount':activity_data.get('keycount', 'nodata')
     }
-    print(f'{user_name}_{activity_data.get('screenshot_path')}')
     return render(request, 'working.html', context)
 
 def dashboard(request):

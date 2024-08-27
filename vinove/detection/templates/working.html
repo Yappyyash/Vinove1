@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Working</title>
+    <title> 🔴 Working</title>
     <style>
         body {
-  font-family: "Comic Sans MS", cursive;
+  font-family: 'Times New Roman', Times, serif;
   margin: 0;
   display: flex;
   align-items: center;
@@ -72,14 +72,16 @@ button:hover {
 <body>
     <div class="container">
         <div class="card">
-    <h1>
+    <h1 style="text-align: center;">
         {{ user_name }}
         <h1>Activity Monitor</h1>
-    <p>Status: {{ status }}</p>
+    <b>Status: {{ status }}</b>
     <p>Active Time: of current session {{ active_time }} minutes</p>
-    <p>{{ mousecount }} key and mouse count {{ keycount }}</p>
-    <p id="total"></p>
-        <a href="https://us-east-1.console.aws.amazon.com/s3/buckets/shailenderproject?region=us-east-1&bucketType=general&tab=objects" target="_blank">AWS S3 Bucket</a>
+    <p> Mouse Count {{ mousecount }} </p>
+    <p> Keys Clicked {{ keycount }}</p>
+    <p> Total Session Timming <span id="total"> </span> Minutes</p>
+
+    <button onclick="checkConnectivity()">AWS</button>
     </h1>
     <ol id="list">
         {% for item in finaldata %}
@@ -103,6 +105,14 @@ button:hover {
 
       // Call the function to sum the values when the page loads
       sumListValues();
+
+      function checkConnectivity() {
+            if (navigator.onLine) {
+                window.location.href = "https://us-east-1.console.aws.amazon.com/s3/buckets/shailenderproject?region=us-east-1&bucketType=general&tab=objects";
+            } else {
+                alert("No network connection. Please check your internet connectivity.");
+            }
+        }
     </script>
 </body>
 </html>

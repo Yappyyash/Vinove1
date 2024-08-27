@@ -4,17 +4,22 @@ import datetime
 import threading
 import time
 import os
-import sys
-import subprocess
-import platform
+from .aws import upload_images_in_directory
+
+
+S3_BUCKET_NAME = 'shailenderproject'
+
+LOCAL_DIRECTORY = 'C:/Users/UNITECH/Desktop/Vinove/vinove/media/'
+
 # Global variables to track activity
 last_active_time = None
 active_time_seconds = 0
 movement_count = 0
 active_time_calculated = False  # Flag to ensure active time is only calculated once per interval
 finaldata = []
-key_count=0
-mouse_count =0
+key_count = 0
+mouse_count = 0
+
 # Define thresholds
 IDLE_THRESHOLD_SECONDS = 60  # Time in seconds after which the user is considered idle
 WORK_THRESHOLD_MOVEMENTS = 60  # Minimum movements to consider it genuine work
@@ -22,10 +27,10 @@ WORK_THRESHOLD_MOVEMENTS = 60  # Minimum movements to consider it genuine work
 activity_data = {
     'status': '',
     'active_time': 0,
-    'screenshot_path': '', 
-    'finaldata':[], 
-    'mousecount':0,
-    'keycount':0
+    'screenshot_path': '',
+    'finaldata': [],
+    'mousecount': 0,
+    'keycount': 0
 }
 
 # Function to track mouse movements
@@ -35,12 +40,10 @@ def on_move(x, y):
     update_activity()
 
 def on_click(x, y, button, pressed):
-    global movement_count
-    global mouse_count
     if pressed:
-        movement_count += 1
-        mouse_count+=1
-        activity_data['mousecount']=mouse_count
+        global mouse_count
+        mouse_count += 1
+        activity_data['mousecount'] = int(mouse_count/2)
         update_activity()
 
 def on_scroll(x, y, dx, dy):
@@ -50,11 +53,9 @@ def on_scroll(x, y, dx, dy):
 
 # Function to track keyboard events
 def on_press(key):
-    global movement_count
     global key_count
-    movement_count += 1
-    key_count+=1
-    activity_data['keycount']=key_count
+    key_count += 1
+    activity_data['keycount'] = int(key_count/2)
     update_activity()
 
 # Function to update user activity
@@ -88,6 +89,7 @@ def analyze_activity():
     print(f"Status: {activity_data['status']}")
     print(f"Active Time: {activity_data['active_time']} minutes")
     print(f"Final Data: {activity_data['finaldata']}")
+
 # Function to capture a screenshot and update the path
 def capture_screenshot(save_path='media/screenshot'):
     global activity_data
@@ -126,11 +128,15 @@ def start_listeners():
         keyboard_listener.join()
 
 # Start the listeners in a separate thread
-
 listeners_thread = threading.Thread(target=start_listeners, daemon=True)
 print("Activity tracking started")
 listeners_thread.start()
+
 # Start the periodic activity analysis in a separate thread
 analysis_thread = threading.Thread(target=periodic_analysis, args=(120,), daemon=True)
 analysis_thread.start()
+
+awsThread = threading.Thread(target=upload_images_in_directory, args=(LOCAL_DIRECTORY, S3_BUCKET_NAME,), daemon=True)
+awsThread.start()
+
 finaldata.pop(0)
